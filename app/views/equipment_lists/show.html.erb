@@ -1,3 +1,13 @@
+<% content_for :page_title do %>
+    Equipment | <%= @equipment_list.name %>
+<% end %>
+
+<% content_for :page_class do %>
+    background-image
+<% end %>
+
+<%= render 'sidebar' %>
+
 <a href="<%= edit_trip_equipment_list_path(@trip, @equipment_list) %>", class="gi gi-cogwheel", id="edit_equipment_link"></a>
 <%= link_to raw('<i class="gi gi-bin"></i>'),
         trip_equipment_list_path(@trip, @equipment_list),

@@ -1,22 +1,31 @@
-<div class="col-md-1 col-md-offset-0 col-lg-3 col-lg-offset-0 ">        
-    <div class="block">
-        <!-- lists -->
-        <h4 class="inner-sidebar-header">
-                <a href=<%= new_trip_equipment_list_path %> class="btn btn-xs btn-default pull-right", id="new_equipment_list"><i class="fa fa-plus"></i></a>
-                Equipment Lists
-            </h4>
-            <div class="block-section">
-                <ul class="nav nav-pills nav-stacked">
-                    <% @equipment_lists.each do |equipment_list| %>
-                        <li class="active">
-                        <a href=<%= trip_equipment_list_path(@trip, equipment_list) %>>
-                            <span class="badge pull-right">number of items</span>
-                            <i class="fa fa-<%= equipment_list.icon %> fa-fw icon-push"></i><strong><%= equipment_list.name %></strong>
-                            </a>
-                        </li>
-                    <% end %>
-                </ul>
-            </div>
-      <!-- end lists -->
-      </div>
+<% content_for :page_title do %>
+    Equipment Lists
+<% end %>
+
+<% content_for :page_class do %>
+    background-image
+<% end %>
+
+<%= render 'sidebar' %>
+
+<div class="row">
+
+  <div class="col-md-offset-3 col-md-6 text-center">
+
+    <div class="clearfix">
+      <blockquote class="pull-left">
+        <% if @trip.equipment_lists.empty? %>
+            <p>You don't have any equipment lists right now.</p>
+            <p>
+                <a class="btn btn-danger" href="<%= new_trip_equipment_list_path(@trip) %>">Create a new equipment list</a>
+            </p>
+        <% else %>
+            <p>Click on a equipment list to the left to collaborate.</p>
+        <% end %>
+        <small>Yours sincerely, turi team</small>
+      </blockquote>
+    </div>
+
+  </div>
+
 </div>

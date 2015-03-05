@@ -1,4 +1,7 @@
 class EquipmentListsController < ApplicationController
+
+  layout 'trip'
+
     before_action :authenticate_user!
     before_action :set_trip
     before_action :set_equipment_list, :only => [:show, :update, :edit, :destroy]
@@ -55,6 +58,7 @@ class EquipmentListsController < ApplicationController
     end
 
     private
+
     def set_trip
         @trip = Trip.find(params[:trip_id])
         rescue ActiveRecord::RecordNotFound

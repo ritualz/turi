@@ -1,3 +1,19 @@
+<% content_for :page_stylesheets do %>
+    <link rel="stylesheet" href="<%= asset_path 'app/js/vendor/fontawesome-iconpicker-1.0.0/dist/css/fontawesome-iconpicker.min.css' %>">
+<% end %>
+
+<% content_for :page_scripts do %>
+    <script src="<%= asset_path 'app/js/vendor/fontawesome-iconpicker-1.0.0/dist/js/fontawesome-iconpicker.min.js' %>"></script>
+    <script>
+        $(function() {
+            $('#equipment_list_icon').iconpicker({
+                placement:'top',
+                defaultValue: 'fa-align-justify'
+            });
+        });
+    </script>
+<% end %>
+
 <div class="row">
   <div class="col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
     <div class="block">
@@ -14,18 +30,6 @@
       <!-- END Horizontal Form Title -->
 
       <%= form_for [@trip, @equipment_list], html: {class: 'form-horizontal form-bordered'} do |f| %>
-          <% if @equipment_list.errors.any? %>
-              <div id="error_explanation">
-                <h2> <%= pluralize(@equipment_list.errors.count, "error") %>
-                  prohibited this equipment list from begin saved:
-                </h2>
-                <ul>
-                  <% @equipment_list.errors.full_messages.each do |msg| %>
-                      <li><%= msg %> </li>
-                  <% end %>
-                </ul>
-              </div>
-          <% end %>
 
           <div class="form-group">
             <%= f.label :name, class: 'col-md-3 control-label' %>
@@ -38,16 +42,15 @@
           <div class="form-group">
             <%= f.label :description, class: 'col-md-3 control-label' %>
             <div class="col-md-9">
-              <div class="input-group">
-                <%= f.text_field :description, class: 'form-control', placeholder: 'Equipment list description.' %>
-              </div>
+              <%= f.text_area :description, class: 'form-control', placeholder: 'Equipment list description.', rows: 7 %>
             </div>
           </div>
 
           <div class="form-group">
             <%= f.label :icon, class: 'col-md-3 control-label' %>
-            <div class="col-md-9">
-              <%= f.text_field :icon, class: 'form-control', placeholder: 'Awesome icon for your equipment list...'%>
+            <div class="col-md-4">
+              <%= f.text_field :icon, class: 'form-control'%>
+              <span class="help-block">Awesome icon for your equipment list...</span>
             </div>
           </div>
 
