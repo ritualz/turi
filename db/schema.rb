@@ -34,6 +34,30 @@ ActiveRecord::Schema.define(version: 20150310095322) do
 
   add_index "api_providers", ["name"], name: "index_api_providers_on_name", unique: true
 
+  create_table "equipment_assignments", force: :cascade do |t|
+    t.integer  "number"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.integer  "equipment_item_id"
+    t.integer  "user_id"
+  end
+
+  add_index "equipment_assignments", ["equipment_item_id"], name: "index_equipment_assignments_on_equipment_item_id"
+  add_index "equipment_assignments", ["user_id"], name: "index_equipment_assignments_on_user_id"
+
+  create_table "equipment_items", force: :cascade do |t|
+    t.string   "name"
+    t.float    "price",             default: 0.0
+    t.integer  "number",            default: 1
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.integer  "equipment_list_id"
+    t.integer  "user_id"
+  end
+
+  add_index "equipment_items", ["equipment_list_id"], name: "index_equipment_items_on_equipment_list_id"
+  add_index "equipment_items", ["user_id"], name: "index_equipment_items_on_user_id"
+
   create_table "equipment_lists", force: :cascade do |t|
     t.string   "name"
     t.string   "description"

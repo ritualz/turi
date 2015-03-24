@@ -11,6 +11,7 @@ class EquipmentListsController < ApplicationController
     end
 
     def show 
+        @equipment_item = EquipmentItem.new
     end
 
     def new
