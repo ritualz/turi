@@ -1,0 +1,51 @@
+<div class="row">
+<div class="col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+    <div class="block">
+        <!-- Horizontal form title -->
+        <div class="block-title">
+            <h2>
+                <% if current_page?(:action => 'new') %>
+                    Create equipment item for <%= @equipment_list.name %>
+            <% else %>
+                Edit <%= @equipment_item %>
+        <% end %>
+            </h2>
+        </div>
+        <!-- END horizontal form title -->
+
+        <%= form_for [@trip, @equipment_list, @equipment_item], html: {class: 'form-horizontal form-bordered'} do |f| %>
+            <div class="form-group">
+                <%= f.label :name, class: 'col-md-3 control-label' %>
+                <div class="col-md-9">
+                    <%= f.text_field :name, class: 'form-control'%>
+                    <span class="help-block">Any equipment item name that's fine.</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <%= f.label :price, class: 'col-md-3 control-label' %>
+                <div class="col-md-9">
+                    <%= f.text_area :price, class: 'form-control', placeholder: 'Price of a item.', rows: 7 %>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <%= f.label :number, class: 'col-md-3 control-label' %>
+                <div class="col-md-4">
+                    <%= f.text_field :number, class: 'form-control'%>
+                    <span class="help-block">Number of items</span>
+                </div>
+            </div>
+
+            <div class="form-group form-actions">
+                <div class="col-md-9 col-md-offset-3">
+                    <%= f.submit class: 'btn btn-effect-ripple btn-primary', id: 'submit' %>
+                    <%= link_to 'Cancel', :back, class: 'btn btn-effect-ripple btn-primary', id: 'cancel_button' %>
+                </div>
+            </div>
+
+        <% end %>
+    </div>
+</div>
+</div>
+

@@ -1,0 +1,2 @@
+module EquipmentAssignmentsHelper
+end

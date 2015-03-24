@@ -1,0 +1,29 @@
+
+
+<%= form_for [@trip, @equipment_list, @equipment_item], html: {class: 'form-horizontal form-bordered'} do |f| %>
+    <div class="form-group">
+        <div class="col-md-8">
+            <%= f.text_field :name, class: 'form-control input-lg', placeholder: 'Name of new item' %>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-8">
+            <%= f.number_field :price, class: 'form-control input-lg', placeholder: 'Price of a item.' %>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-8">
+            <%= f.number_field :number, class: 'form-control input-lg', placeholder: 'Number of items' %>
+        </div>
+    </div>
+
+    <div class="form-group form-actions">
+        <div class="col-md-8">
+            <%= f.submit class: 'btn btn-effect-ripple btn-primary', id: 'submit' %>
+        </div>
+    </div>
+
+<% end %>
+
