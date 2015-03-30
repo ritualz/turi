@@ -1,5 +1,5 @@
 <% content_for :page_title do %>
-    equipment | <%= @equipment_list.name %>
+    equipment <%= @equipment_list.name %>
 <% end %>
 
 <% content_for :page_class do %>
@@ -8,30 +8,42 @@
 
 <% content_for :page_scripts do %>
     <script>
-        $(function() {
-            $('#expand_button').click(function() {
-                $('#new_form').toggleClass('hidden');
-            });
-        });
+$(function () {
+    $('#expand_button').click(function () {
+        $('#new_form').toggleClass('hidden');
+    });
+});
     </script>
 <% end %>
 
 <%= render 'sidebar' %>
 
 
+<% content_for :content_header do %>
+    <div class="content-header">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="header-section">
+              <h1><%= @equipment_list.name %></h1><i>Created by: ...</i>
+          </div>
+        </div>
+      </div>
+    </div>
+<% end %>
+
 <!-- Begin block -->
 <div class='block'>
-    <div class = 'block-title'>
+    <div class='block-title'>
         <div class="block-options pull-right">
             <div class="btn-group">
                 <% if policy(@trip).update? %>
                     <a aria-expanded="false" data-original-title="Options" style="overflow: hidden; position: relative;" class="btn btn-effect-ripple btn-default dropdown-toggle enable-tooltip" data-toggle="dropdown" title="">
-                    <span style="height: 34px; width: 34px; top: 10px; left: -7.66669px;" class="btn-ripple animate"></span>
-                    <i class="fa fa-chevron-down"></i></a>
-                    
+                        <span style="height: 34px; width: 34px; top: 10px; left: -7.66669px;" class="btn-ripple animate"></span>
+                        <i class="fa fa-chevron-down"></i></a>
+
                     <ul class="dropdown-menu dropdown-menu-right">
                         <li>
-                            <a href="<%= edit_trip_equipment_list_path(@trip, @equipment_list) %>", id='edit_equipment_list'>
+                            <a href="<%= edit_trip_equipment_list_path(@trip, @equipment_list) %>" , id='edit_equipment_list'>
                                 <i class="fa fa-pencil pull-right"></i>
                                 Edit
                             </a>
@@ -43,59 +55,83 @@
                                     trip_equipment_list_path(@trip, @equipment_list),
                                     :method => :delete,
                                     :data => {
-                                        :confirm    => 'Are you sure you want to delete this equipment list?',
-                                        :toogle     => 'tooltip'
+                                        :confirm => 'Are you sure you want to delete this equipment list?',
+                                        :toogle => 'tooltip'
                                     },
                                     :class => 'text-danger',
                                     :title => '',
-                                    :id    => 'delete_equipment_list'
+                                    :id => 'delete_equipment_list'
                                 %>
-                            </li>
-                        <% end %>
+                        </li>
+                    <% end %>
                     </ul>
                 <% end %>
             </div>
         </div>
-        <h2> <%= @equipment_list.name %> </h2>
+        <h2> <%= t('Description') %> </h2>
     </div>
-    <div id="faq1" class="panel-group">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <div class="panel-title">
-                    <i class="fa fa-angle-right"></i> <a aria-expanded="false" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#faq1" href="#faq1_q1"><strong>Description</strong></a>
-                </div>
-            </div>
-            <div style="height: 0px;" aria-expanded="false" id="faq1_q1" class="panel-collapse collapse">
-                <div class="panel-body">
-                    <p> <%= @equipment_list.description %> </p>
-                </div>
-            </div>
-        </div>
-    </div>
+    <p> <%= @equipment_list.description %> </p>
+</div>
 
-    <p class='lead'>
-    <strong> Items </strong>
-    </p>
-
-    <!-- Begin render the form if authorized -->
+<!-- Begin render the form if authorized -->
+<div class='block'>
+    <% if @equipment_list.equipment_items.count != 0 %>
     <% if policy(@trip).update? %>
-        <a class="btn btn-xs" title="expand" id='expand_button'><i class="fa fa-plus"></i></a>
+        <button type="button" id='expand_button' class="btn btn-success pull-right"><%= t('Create new item') %></button>
     <% end %>
-    <div id='new_form' class=''> <!-- <div id='new_form' class='hidden'> -->
+    <div id='new_form' class='hidden'>
         <%= render :partial => 'equipment_items/form_small' %>
     </div>
     <!-- End render form -->
 
-    <!-- Begin display the items of the list -->
-    <ul class="task-list">
-        <% @equipment_list.equipment_items.each do | equipment_item | %>
-            <li>
-                <a href='<%= trip_equipment_list_equipment_item_path(@trip, @equipment_list, equipment_item) %>' id='<%= equipment_item.name %>'><%= equipment_item.name %></a> <span>
-            </li>
-        <% end %>
-    </ul>
-    <!-- End displaying the items -->
+    <!-- begin equipment table -->
+    <div class='table-responsive'>
+        <table class="table table-borderless table-vcenter">
+            <thead>
+                <tr>
+                    <th>Item name</ht>
+                        <th>Status</th>
+                        <th style="width: 80px;" class="text-center"><i class="fa fa-flash"></i></th>
+                </tr>
+            </thead>
+            <tbody>
+                <% @equipment_list.equipment_items.each do |item| %>
+                    <tr>
+                        <td><a href="<%= trip_equipment_list_equipment_item_path(@trip, @equipment_list, item) %>"><strong><%= item.name %></strong></a></td>
+                        <% if item.number == item.equipment_assignments.sum(:number) %>
+                            <td><a href="javascript:void(0)" class="label label-success">All items assigned!</a></td>
+                        <% else %>
+                            <td><a href="javascript:void(0)" class='label label-danger'><%= item.equipment_assignments.sum(:number)%>/<%=item.number%> assigned</a></td>
+                        <% end %>
+                        <td class="text-center">
+                            <% if policy(@trip).update? %>
+                                <a href="<%= edit_trip_equipment_list_equipment_item_path(@trip, @equipment_list, item) %>" data-toggle="tooltip" title="Edit item" class="btn btn-effect-ripple btn-xs btn-success"><i class="fa fa-pencil"></i></a>
+                            <% end %>
+                            <% if policy(@trip).destroy? %>
+                                <%= link_to raw('<i data-toggle="tooltip" title="delete item" class="btn btn-effect-ripple btn-xs btn-danger fa fa-times"></i>'),
+                                    trip_equipment_list_equipment_item_path(@trip, @equipment_list, item),
+                                    :method => :delete,
+                                    :data => {
+                                        :confirm => 'Are you sure you want to delete this equipment item?',
+                                        :toogle => 'tooltip'
+                                    },
+                                    :class => 'text-danger',
+                                    :title => '',
+                                    :id => 'delete_equipment_item'
+                                %>
+
+                        <% end %>
+                        </td>
+                    </tr>
+                <% end %>
+            </tbody>
+        </table>
+    </div>
 </div>
+<% else %>
+    <%= t('Add item') %>
+    <%= render partial: 'equipment_items/form_small' %>
+<% end %>
 </div>
 </div>
 </div>

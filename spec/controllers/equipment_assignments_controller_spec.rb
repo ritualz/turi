@@ -9,7 +9,6 @@ RSpec.describe EquipmentAssignmentsController, type: :controller do
         @trip = FactoryGirl.create(:trip)
         FactoryGirl.create(:participant, :trip_id => @trip.id, :user_id => @owner.id, :participant_role_id => ParticipantRole.owner.id)
         FactoryGirl.create(:participant, :trip_id => @trip.id, :user_id => @editor.id, :participant_role_id => ParticipantRole.editor.id)
-        FactoryGirl.create(:participant, :trip_id => @trip.id, :user_id => @viewer.id, :participant_role_id => ParticipantRole.viewer.id)
 
 
         @equipment_list = FactoryGirl.create(:equipment_list, :trip_id => @trip.id)

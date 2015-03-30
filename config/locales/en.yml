@@ -102,6 +102,9 @@ en:
   trip_equipment_list_deleted:              "Equipment list successfully deleted."
   trip_equipment_list_not_found:            "Equipment list not found!"
 
+
+  # equipment_assignments
+  add_assignment:                           "You can now make a new assignmnet"
   # media
   trip_media_accounts:         "Your accounts"
   trip_media_sidebar_header:   "Galleries"

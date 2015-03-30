@@ -1,30 +1,35 @@
-<!-- Form for equipment assigment -->
-<%= form_for [@trip, @equipment_list, @equipment_item, @equipment_assignment] do |f| %>
-    <!-- 
-        if the current_user is authorized, he/she can add assigments for other people
-        It's done by adding the email for the participant into the field, if the field is blank it's assigned to current_user
-    -->
-    <% if policy(@trip).update? %>
-        <%= text_field_tag(:user_email, '', class: 'form-control') %>
-    <% end %>
-    <!-- Begin slider -->
-    <div class="input-slider-info">
-        <div class="slider slider-horizontal">
-            <div class="slider-track">
-                <div style="left: 0%; width: 42%;" class="slider-selection"></div>
-                <div tabindex="0" style="left: 42%;" class="slider-handle round"></div>
-                <div tabindex="0" style="left: 0%;" class="slider-handle round hide"></div>
+<div class='block'>
+    <div class='block-title'>
+        <strong><%= t('Assign item') %></strong>
+    </div>
+    <!-- Form for equipment assigment -->
+    <%= form_for [@trip, @equipment_list, @equipment_item, @equipment_assignment] do |f| %>
+        <!-- 
+            if the current_user is authorized, he/she can add assigments for other people
+            It's done by adding the email for the participant into the field, if the field is blank it's assigned to current_user
+        -->
+        <% if policy(@trip).update? %>
+            <%= text_field_tag(:user_email, '', class: 'form-control') %>
+        <% end %>
+        <!-- Begin slider -->
+        <div class="input-slider-info">
+            <div class="slider slider-horizontal">
+                <div class="slider-track">
+                    <div style="left: 0%; width: 42%;" class="slider-selection"></div>
+                    <div tabindex="0" style="left: 42%;" class="slider-handle round"></div>
+                    <div tabindex="0" style="left: 0%;" class="slider-handle round hide"></div>
+                </div>
+                <div class="tooltip top hide">
+                    <div class="tooltip-arrow"></div>
+                    <div class="tooltip-inner"></div>
+                </div>
+                <input style="display: none;" id="equipment_assignment_number" name="equipment_assignment[number]" class="form-control input-slider" data-slider-min="1" data-slider-max="<%= (@equipment_item.number - @equipment_item.equipment_assignments.sum(:number)) %>" data-slider-step="1" data-slider-value="<%= (@equipment_item.number - @equipment_item.equipment_assignments.sum(:number))/2 %>" value="<%= (@equipment_item.number - @equipment_item.equipment_assignments.sum(:number))/2 %>" data-slider-orientation="horizontal" data-slider-selection="before" data-slider-tooltip="show" type="number">
             </div>
-            <div style="top: -32px; left: 238.98px;" class="tooltip top hide">
-                <div class="tooltip-arrow"></div>
-                <div class="tooltip-inner"></div>
-            </div>
-            <input style="display: none;" id="equipment_assignment_number" name="equipment_assignment[number]" class="form-control input-slider" data-slider-min="1" data-slider-max="<%= (@equipment_item.number - @equipment_item.equipment_assignments.sum(:number)) %>" data-slider-step="1" data-slider-value="<%= (@equipment_item.number - @equipment_item.equipment_assignments.sum(:number))/2 %>" value="<%= (@equipment_item.number - @equipment_item.equipment_assignments.sum(:number))/2 %>" data-slider-orientation="horizontal" data-slider-selection="before" data-slider-tooltip="show" type="number">
         </div>
-    </div>
-    <!-- end slider -->
-    <div class="form-group form-actions">
-        <%= f.submit class: 'btn btn-effect-ripple btn-primary', id: 'submit' %>
-    </div>
-<% end %>
-<!-- end form -->
+        <!-- end slider -->
+        <div class="form-group form-actions">
+            <%= f.submit class: 'btn btn-effect-ripple btn-primary', id: 'submit' %>
+        </div>
+    <% end %>
+    <!-- end form -->
+</div>
