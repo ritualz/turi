@@ -6,8 +6,19 @@ class UsersController < ApplicationController
   after_action :verify_authorized
 
   def show
-    @current_user = current_user
-    authorize User
+    authorize @user
+
+
+    @friends = Kaminari.paginate_array(@user.friends).page(params[:friends]).per(3)
+
+
+    # something like this? FIXME FIXME FIXME
+    Trip.where(:participants => @user.participants, :public => true)
+
+    # FIXME
+    #@public_trips = Kaminari.paginate_array(Trip.where(:id => Participant.where(:user => @user), :public => true)).page(params[:trips]).per(5)
+    @public_trips = Kaminari.paginate_array(Trip.all).page(params[:trips]).per(5)
+
   end
 
   def edit
@@ -26,7 +37,7 @@ class UsersController < ApplicationController
 
   private
   def user_params
-    params.require(:user).permit(:name, :email, :age, :country, :town, :status, :image)
+    params.require(:user).permit(:name, :email, :age, :country, :town, :status, :image, :gender)
   end
 
   def set_user

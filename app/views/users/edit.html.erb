@@ -1,77 +1,88 @@
-<div class="block">
-  <div class="block-title">
-    <h2>Welcome to the edit user page</h2>
-  </div>
-
-  <%= form_for @user, html: {class: "form-horizontal form-bordered"} do |form| %>
-      <% if @user.errors.any? %>
-          <div id="error_explanation">
-            <h2> <%= pluralize(@user.errors.count, "error") %>
-              prohibited this user from being saved:
-            </h2>
-            <ul>
-              <% @user.errors.full_messages.each do |msg| %>
-                  <li><%= msg %> </li>
-              <% end %>
-            </ul>
+<div class="row">
+    <div class="col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+        <div class="block">
+          <!-- Horizontal Form Title -->
+          <div class="block-title">
+              <h2><%= t('edit_user') %></h2>
           </div>
-      <% end %>
-      <div class="form-group">
-        <%= form.label :name, class: "col-md-3 control-label" %><br>
+          <!-- END Horizontal Form Title -->
 
-        <div class="col-md-9">
-          <%= form.text_field :name, class: "form-control" %>
-        </div>
-      </div>
-      <div class="form-group">
-        <%= form.label :email, class: "col-md-3 control-label" %><br>
+          <%= form_for @user, html: {class: "form-horizontal form-bordered"} do |f| %>
 
-        <div class="col-md-9">
-          <%= form.text_field :email, class: "form-control" %>
-        </div>
-      </div>
-      <div class="form-group">
-        <%= form.label :age, class: "col-md-3 control-label" %><br>
+              <div class="<%= form_group_class @user, :name %>">
+                <%= f.label :name, class: "col-md-3 control-label" %>
+                <div class="col-md-9">
+                    <%= f.text_field :name, class: "form-control" %>
+                    <%= form_group_errors @user, :name %>
+                </div>
+              </div>
 
-        <div class="col-md-9">
-          <%= form.number_field :age, class: "form-control" %>
-        </div>
-      </div>
-      <div class="form-group">
-        <%= form.label :country, class: "col-md-3 control-label" %><br>
+              <div class="<%= form_group_class @user, :email %>">
+                <%= f.label :email, class: "col-md-3 control-label" %>
+                <div class="col-md-9">
+                    <%= f.text_field :email, class: "form-control" %>
+                    <%= form_group_errors @user, :email %>
+                </div>
+              </div>
 
-        <div class="col-md-9">
-          <%= form.text_field :country, class: "form-control" %>
-        </div>
-      </div>
-      <div class="form-group">
-        <%= form.label :town, class: "col-md-3 control-label" %><br>
+              <div class="<%= form_group_class @user, :age %>">
+                <%= f.label :age, class: "col-md-3 control-label" %><br>
+                <div class="col-md-9">
+                    <%= f.number_field :age, class: "form-control" %>
+                    <%= form_group_errors @user, :age %>                    
+                </div>
+              </div>
 
-        <div class="col-md-9">
-          <%= form.text_field :town, class: "form-control" %>
-        </div>
-      </div>
-      <div class="form-group">
-        <%= form.label :status, class: "col-md-3 control-label" %><br>
+              <div class="<%= form_group_class @user, :country %>">
+                <%= f.label :country, class: "col-md-3 control-label" %><br>
+                <div class="col-md-9">
+                    <%= f.text_field :country, class: "form-control" %>
+                    <%= form_group_errors @user, :age %>                    
+                </div>
+              </div>
 
-        <div class="col-md-9">
-          <%= form.text_field :status, class: "form-control" %>
-        </div>
-      </div>
-      <div class="form-group">
-        <%= form.label :image, class: "col-md-3 control-label" %><br>
+              <div class="<%= form_group_class @user, :town %>">
+                <%= f.label :town, class: "col-md-3 control-label" %><br>
+                <div class="col-md-9">
+                    <%= f.text_field :town, class: "form-control" %>
+                    <%= form_group_errors @user, :town %>                    
+                </div>
+              </div>
 
-        <div class="col-md-9">
-          <%= form.text_field :image, class: "form-control" %>
-        </div>
-      </div>
+              <div class="<%= form_group_class @user, :status %>">
+                <%= f.label :status, class: "col-md-3 control-label" %><br>
+                <div class="col-md-9">
+                    <%= f.text_field :status, class: "form-control" %>
+                    <%= form_group_errors @user, :status %>                    
+                </div>
+              </div>
 
-      <div class="form-group form-actions">
-        <div class="col-md-9 col-md-offset-3">
-          <%= form.submit id: 'save-user-btn',
-                          class: "btn btn-effect-ripple btn-primary" %>
-          <%= link_to t(:cancel), user_path(@user), class: 'btn btn-effect-ripple btn-primary', id: 'cancel_button' %>
+              <div class="<%= form_group_class @user, :image %>">              
+                <%= f.label :image, class: "col-md-3 control-label" %><br>
+                <div class="col-md-9">
+                    <%= f.text_field :image, class: "form-control" %>
+                    <%= form_group_errors @user, :image %>                    
+                </div>
+              </div>
+
+              <div class="<%= form_group_class @user, :gender %>">                            
+                  <%= f.label :gender, class: "col-md-3 control-label" %><br>
+                  <div class="col-md-9">
+                    <input type="radio" id="user_gender" name="user[gender]" value=1> Male
+                    <input type="radio" id="user_gender" name="user[gender]" value=2> Female
+                    <%= form_group_errors @user, :gender %>                                        
+                  </div>
+              </div>
+                       
+
+              <div class="form-group form-actions">
+                <div class="col-md-9 col-md-offset-3">
+                  <%= f.submit id: 'save-user-btn',
+                                  class: "btn btn-effect-ripple btn-primary" %>
+                  <%= link_to t(:cancel), :back, class: 'btn btn-effect-ripple btn-primary', id: 'cancel_button' %>
+                </div>
+              </div>
+          <% end %>
         </div>
-      </div>
-  <% end %>
+    </div>
 </div>

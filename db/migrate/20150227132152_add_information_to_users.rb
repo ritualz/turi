@@ -4,5 +4,6 @@ class AddInformationToUsers < ActiveRecord::Migration
     add_column :users, :town, :string
     add_column :users, :age, :integer
     add_column :users, :status, :string
+    add_column :users, :gender, :integer
   end
 end

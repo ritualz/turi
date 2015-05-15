@@ -1,98 +1,115 @@
-<h1>My Profile</h1>
+<% content_for :page_title do %>
+    <%= t('user_profile') %> - <%= @user.name %>
+<% end %>
 
 <div class="row">
-  <div class="col-md-5 col-lg-4">
-    <div class="user widget">
-      <div class="widget-image widget-image-sm">
-        <div id="user-image">
-          <% if @user.image %>
-              <img src="<%= @user.image %>" alt="image">
-          <% else %>
-              <img src="http://lorempixel.com/315/270/nature" alt="image">
-          <% end %>
-        </div>
-        <div class="widget-image-content text-center">
-          <h2 class="widget-heading text-light"><strong><%= @user.name %> </strong></h2>
-        </div>
-      </div>
-      <div class="widget-content widget-content-full border-bottom">
-        <div class="row text-center">
-          <div class="row text-center">
-            <div class="col-xs-6 push-inner-top-bottom border-right">
-              <h3 class="widget-heading"><i class="gi gi-heart text-danger push"></i><br>
-                <small><strong>100</strong>Likes</small>
-              </h3>
-            </div>
-            <div class="col-xs-6 push-inner-top-bottom">
-              <% if current_user.id != @user.id %>
-                  <% f = Friendship.where('(friend_id LIKE ? AND user_id LIKE ?) OR (user_id LIKE ? AND friend_id LIKE ?)', "%#{@user.id}%", "%#{current_user.id}%", "%#{current_user.id}%", "%#{@user.id}%") %>
-                  <% if f.blank? %>
-                      <a href="<%= user_friendships_path(@user) %>" data-method="post"> <i class="fa fa-plus"></i></a>
-                      <%= link_to "Add Friend", user_friendships_path(@user), :method => :post %>
-                  <% end %>
-
-              <% end %>
-              <h3 class="widget-heading"><i class="gi gi-group themed-color-social push"></i><br>
-                <small>
-                  <strong><%= Friendship.where(user_id: @user.id).count + Friendship.where(friend_id: @user.id).count %></strong>Friends
-                </small>
-              </h3>
-            </div>
-          </div>
-        </div>
-        <div class="widget-content border-bottom">
-          <h4>Information</h4>
-
-          <p><%= @user.email %></p>
-
-          <p><%= @user.age %></p>
-
-          <p><%= @user.country %></p>
-
-          <p><%= @user.town %></p>
-
-          <p><%= @user.status %></p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-7 col-lg-8">
-    <div class="block full">
-      <div class="block-title">
-        <% if policy(@user).update? %>
-            <div class="block-options pull-right">
-              <%= link_to edit_user_path(@user),
-                            id: "edit-user-btn",
-                            class: "btn btn-effect-ripple btn-default",
-                            data_toggle: "tooltip",
-                            title: t(:edit_user) do %>
-                  <i class="fa fa-cog"></i>
-              <% end %>
-            </div>
-        <% end %>
-      </div>
-    </div>
-    <div class="block full">
-      <div class="block-title">
-        <h2> Your friends </h2>
-        <ul>
-          <% for user in @user.inverse_friends %>
-              <li>
-                <%= link_to user.name, user_path(user), :method => :get %>
-              </li>
-          <% end %>
-          <% for friendship in @user.friendships %>
-              <li>
-                <%= link_to friendship.friend.name, user_path(friendship.friend), :method => :get %>
-                <% if current_user.id == @user.id %>
-                    <a href="<%= user_friendship_path(@user, friendship) %>" data-method="delete">
-                      <i class="fa fa-minus"></i></a>
+    <div class="col-md-12">
+        <!-- User Profile Header -->
+        <div class="widget">
+            <% if current_user == @user %>
+                <%= link_to edit_user_path(@user),
+                        id: "edit-user-btn",
+                        class: "btn btn-effect-ripple btn-default widget-heading",
+                        data_toggle: "tooltip",
+                        title: t(:edit_user) do %>
+                    <i class="fa fa-cog"></i>
                 <% end %>
-              </li>
-          <% end %>
-        </ul>
-      </div>
-    </div>
+            <% end %>
+            <div class="widget-image widget-image-sm" style="height:500px;">
+                <img src="https://i.4cdn.org/wg/1431684618361.jpg" alt="image"> <!-- pick random picture? -->
+                <div class="widget-image-content text-center" >
+                    <img src="<%= (@user.image.blank? || @user.image.nil?) ? @user.gravatar_url : @user.image %>" alt="avatar" class="img-circle img-thumbnail img-thumbnail-transparent img-thumbnail-avatar-2x push" style="margin-top:150px">
+                    <h2 class="widget-heading text-light"><strong><%= @user.name %></strong></h2>
+                    <h4 class="widget-heading text-light-op"><em><%= @user.email %></em></h4>
+                    <h5 class="widget-heading text-light-op"><em>
+                            <i class="fa fa-<%= @user.gender ? "mars" : "venus"%> fa-fw"></i>
+                            - <%= @user.age %> - <%= @user.town %>(<%= @user.country %>) - <%= @user.status %> </em></h5>
+                    <div class="col-md-2 col-md-offset-2">
+                        <div class="widget">
+                          <%= link_to "Add Friend", user_friendships_path(@user), :method => :post %>
+                        </div>
+                    </div>
 
-  </div>
+                    <div class="col-md-2 col-md-offset-4">
+                        <div class="widget">
+                            Hello World
+                        </div>
+                    </div>
+                             
+                </div>
+            </div>
+            <div class="widget-content widget-content-full border-bottom">
+
+            </div>
+            <div class="widget-content border-bottom">
+
+           </div>
+        </div>
+    </div>
+    <!-- End User Profile Header -->
+
+    <!-- Participant Widget -->
+    <div class="col-md-4">
+        <div class="widget">
+          <div class="widget-content widget-content-mini themed-background-dark text-light-op border-bottom">
+              <span class="pull-right text-muted">
+                        <%= page_entries_info @friends %>
+              </span>
+              <a href="javascript:void(0)" class="text-light"></a><%= t('trip_participants') %><a href="javascript:void(0)" class="text-light"></a>
+            </div>
+            <div class="widget-content widget-content-full">
+                <table class="table table-borderless table-striped table-vcenter">
+                    <tbody>
+                        <% @friends.each do |user| %>
+                            <tr>
+                                <td class="text-center" style="width: 100px;">
+                                    <img src="<%= user.gravatar_url %>" alt="User Image" class="img-circle">
+                                </td>
+                                <td>
+                                    <a href="<%= user_path(user) %>"><%= user.name %></a><br>
+                                </td>
+                        <% end %>
+                </tbody>
+            </table>
+            </div>
+            <%= paginate @friends, :param_name => :friends %>
+        </div>
+    </div>
+    <!-- END Participant Widget -->
+
+
+    <!-- Public trips participanting in -->
+    <% unless @public_trips.empty? %>
+        <div class="col-md-4 col-md-offset-4">
+            <div class="widget">
+              <div class="widget-content widget-content-mini themed-background-dark text-light-op border-bottom">
+                  <span class="pull-right text-muted">
+                            <%= page_entries_info @public_trips %>
+                  </span>
+                  <a href="javascript:void(0)" class="text-light"></a><%= t('trip_participants') %><a href="javascript:void(0)" class="text-light"></a>
+                </div>
+                <div class="widget-content widget-content-full">
+                    <table class="table table-borderless table-striped table-vcenter">
+                        <tbody>
+                            <% @public_trips.each do |trip| %>
+                                <tr>
+                                    <td class="text-center" style="width: 100px;">
+                                        <img src="<%= trip.image %>" alt="User Image" class="img-circle img-thumbnail img-thumbnail-transparent img-thumbnail-avatar push">
+                                    </td>
+                                    <td>
+                                        <a href="<%= trip_public_path(trip.id) %>"><%= trip.title %></a><br>
+                                    </td>
+                            <% end %>
+                    </tbody>
+                </table>
+                </div>
+                <%= paginate @public_trips, :param_name => :trips %>
+            </div>
+        </div>
+    <% end %>
+
+
+    <!-- badges? -->
 </div>
+
+

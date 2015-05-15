@@ -208,6 +208,7 @@ ActiveRecord::Schema.define(version: 20150513153130) do
     t.string   "town"
     t.integer  "age"
     t.string   "status"
+    t.integer  "gender"
     t.text     "image"
   end
 
